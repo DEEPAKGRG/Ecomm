@@ -7,9 +7,12 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
 // requiring the search products class
 const APIFeatures = require("../utils/apiFeature");
+const jwt = require("jsonwebtoken");
 
 //creating a new product with the product schema =>api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
+  // using the id of the current logged in person to add his id to the product
+  req.body.user = req.user.id;
   const product = await Product.create(req.body);
   res.status(201).json({ success: true, product });
 });
