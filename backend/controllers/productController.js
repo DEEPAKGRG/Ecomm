@@ -5,6 +5,9 @@ const ErrorHandler = require("../utils/errorHandler");
 // requiring the async main function to handle errors
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
+// requiring the search products class
+const APIFeatures = require("../utils/apiFeature");
+
 //creating a new product with the product schema =>api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.create(req.body);
@@ -13,11 +16,19 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Get all the products=>  api/vi/products
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find();
+  const resPerPage = 4;
+  const productsCount = await Product.countDocuments();
+  const apiFeatures = new APIFeatures(Product.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resPerPage);
+  const products = await apiFeatures.query;
+
   res.status(200).json({
     success: true,
     count: products.length,
-    message: products,
+    productsCount,
+    products,
   });
 });
 
