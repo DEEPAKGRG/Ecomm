@@ -1,5 +1,7 @@
 node_modules/
 logs/
+*.env
+config.env
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable
