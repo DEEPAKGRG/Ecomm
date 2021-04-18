@@ -136,3 +136,90 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   await user.save();
   sendToken(user, 200, res);
 });
+
+// details of the current logged in user =>api/v1/me
+exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  console.log(req.user);
+  const user = await User.findById(req.user.id);
+  res.status(200).json({ success: true, user });
+});
+
+//change the password =>api/v1/password/update
+exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+  console.log(req.user);
+  // using select so that we can can old password from the database
+  const user = await User.findById(req.user.id).select("+password");
+
+  // while changing password taken old password also from the user to act as a authentication
+  const isMatched = await user.comparePassword(req.body.oldPassword);
+  if (!isMatched) {
+    return next(new ErrorHandler("Old Password does not match", 400));
+  }
+
+  user.password = req.body.password;
+
+  await user.save();
+  sendToken(user, 200, res);
+});
+
+// update user profile => api/v1/me/update
+exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserDate = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+  // will add function to update avatar also
+  const user = await User.findByIdAndUpdate(req.params.id, newUserDate, {
+    runValidators: true,
+    new: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({ success: true });
+});
+
+// admin routes
+
+// get all the users by admin => api/v1/admin/users
+exports.allUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({ success: true, users });
+});
+
+// get user details by admin =>api/v1/admin/user/:id
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(
+      new ErrorHandler(`User doesn't find with this ${req.params.id}`, 400)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+// update user details by admin => api/v1/admin/user/:id
+exports.updateUser = catchAsyncErrors(async (req, res, next) => {
+  const newUserDate = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+  // will add function to update avatar also
+  const user = await User.findByIdAndUpdate(req.params.id, newUserDate, {
+    runValidators: true,
+    new: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({ success: true });
+});
+
+// delete a user by admin  =>api/v1/admin/user/:id
+exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  await user.remove();
+  res.status(200).json({ success: true });
+});
