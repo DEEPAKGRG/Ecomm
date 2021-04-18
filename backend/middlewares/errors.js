@@ -6,8 +6,6 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal Server Error";
 
-
-  
   //  error handling for development mode
   if (process.env.NODE_ENV == "DEVELOPMENT") {
     res.status(err.statusCode).json({
@@ -17,8 +15,6 @@ module.exports = (err, req, res, next) => {
       stack: err.stack,
     });
   }
-
-
 
   if (process.env.NODE_ENV == "PRODUCTION") {
     let error = { ...err };
@@ -32,7 +28,24 @@ module.exports = (err, req, res, next) => {
 
     // validation error while adding product handling
     if (err.name === "ValidationError") {
-      let message = Object.values(err.errors).map(value => value.message);
+      let message = Object.values(err.errors).map((value) => value.message);
+      error = new ErrorHandler(message, 400);
+    }
+    // Handling Mongoose duplicate key errors
+    if (err.code === 11000) {
+      const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
+      error = new ErrorHandler(message, 400);
+    }
+
+    // Handling wrong JWT error
+    if (err.name === "JsonWebTokenError") {
+      const message = "JSON Web Token is invalid. Try Again!!!";
+      error = new ErrorHandler(message, 400);
+    }
+
+    // Handling Expired JWT error
+    if (err.name === "TokenExpiredError") {
+      const message = "JSON Web Token is expired. Try Again!!!";
       error = new ErrorHandler(message, 400);
     }
 
