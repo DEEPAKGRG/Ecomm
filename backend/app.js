@@ -15,8 +15,12 @@ const products = require("./routes/product");
 // import all routes of users
 const auth = require("./routes/auth");
 
+// import all routes of orders
+const order = require("./routes/order");
+
 app.use("/api/v1", products);
 app.use("/api/v1", auth);
+app.use("/api/v1", order);
 
 // adding errorMiddleware  middlewares to app to handle errors
 app.use(errorMiddleware);

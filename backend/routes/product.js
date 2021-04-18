@@ -10,7 +10,11 @@ const {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
+  getProductReviews,
+  deleteReview,
 } = require("../controllers/productController");
+const { create } = require("../models/user");
 
 //route to show all products
 router.route("/products").get(isAuthenticatedUser, getProducts);
@@ -30,5 +34,14 @@ router.route("/admin/product/:id").put(authorizeRoles("admin"), updateProduct);
 router
   .route("/admin/product/:id")
   .delete(authorizeRoles("admin"), deleteProduct);
+
+// create a new review or update the existing review on a product
+router.route("/review").put(isAuthenticatedUser, createProductReview);
+
+// get all reviews of a product
+router.route("/reviews").get(isAuthenticatedUser, getProductReviews);
+
+// delete a review on a product
+router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
 
 module.exports = router;
