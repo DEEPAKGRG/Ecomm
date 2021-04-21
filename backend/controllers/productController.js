@@ -19,7 +19,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Get all the products=>  api/vi/products
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 4;
+  const resPerPage = 8;
   const productsCount = await Product.countDocuments();
   const apiFeatures = new APIFeatures(Product.find(), req.query)
     .search()
@@ -29,7 +29,6 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    count: products.length,
     productsCount,
     products,
   });
@@ -38,13 +37,14 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 //get single product by id => api/vi/product/:id
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
+
   if (!product) {
-    // next() this will call errorhandling middleware and pass message and status code acc. to class
     return next(new ErrorHandler("Product not found", 404));
   }
+
   res.status(200).json({
     success: true,
-    message: product,
+    product,
   });
 });
 

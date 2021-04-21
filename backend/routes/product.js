@@ -17,7 +17,7 @@ const {
 const { create } = require("../models/user");
 
 //route to show all products
-router.route("/products").get(isAuthenticatedUser, getProducts);
+router.route("/products").get(getProducts);
 
 //route to get a product by id
 router.route("/product/:id").get(getSingleProduct);
