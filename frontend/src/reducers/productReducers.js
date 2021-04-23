@@ -20,6 +20,8 @@ export const productsReducer = (state = { products: [] }, action) => {
         loading: false,
         products: action.payload.products,
         productsCount: action.payload.productsCount,
+        resPerPage: action.payload.resPerPage,
+        filteredProductsCount: action.payload.filteredProductsCount,
       };
     case ALL_PRODUCTS_FAIL:
       return {
@@ -62,4 +64,3 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
       return state;
   }
 };
- 
