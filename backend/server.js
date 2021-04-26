@@ -3,6 +3,9 @@ const connectDatabase = require("./config/database");
 
 const dotenv = require("dotenv");
 
+// getting cloudinary for images in the cloudinary
+const cloudinary = require("cloudinary");
+
 // Handle Uncaught exceptions
 process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.stack}`);
@@ -15,6 +18,13 @@ dotenv.config({ path: "backend/config/config.env" });
 
 //connecting to datbase
 connectDatabase();
+
+// Setting up cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const server = app.listen(process.env.PORT, () => {
   console.log(

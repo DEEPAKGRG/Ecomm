@@ -11,19 +11,26 @@ const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 
 const crypto = require("crypto");
-const { reset } = require("nodemon");
+var cloudinary = require("cloudinary").v2;
 
 // creating new user =>/api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+  // saving image in the avatars folder of cloudinary
+  const result = await cloudinary.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
+
   const user = await User.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "5343",
-      url:
-        "https://images.unsplash.com/photo-1618583325251-dd1c52a6685e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+      public_id: result.public_id,
+      url: result.secure_url,
     },
   });
   sendToken(user, 200, res);
@@ -62,7 +69,7 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
     .cookie("token", null, options)
-    .json({ success: true, message: "loggout successfully" });
+    .json({ success: true, message: "logout successfully" });
 });
 
 // Forget password =>api/v1/password/forgot
@@ -144,6 +151,8 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, user });
 });
 
+
+
 //change the password =>api/v1/password/update
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   console.log(req.user);
@@ -162,20 +171,47 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-// update user profile => api/v1/me/update
+
+
+
+// Update user profile   =>   /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const newUserDate = {
+  const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
-  // will add function to update avatar also
-  const user = await User.findByIdAndUpdate(req.params.id, newUserDate, {
-    runValidators: true,
+
+  // Update avatar
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
+
+    const image_id = user.avatar.public_id;
+
+    // delete old pic on the cloudinary
+    const res = await cloudinary.uploader.destroy(image_id);
+
+    // saving the new image on the cloudinary
+    const result = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: result.public_id,
+      url: result.secure_url,
+    };
+  }
+  // updating the database
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
+    runValidators: true,
     useFindAndModify: false,
   });
 
-  res.status(200).json({ success: true });
+  res.status(200).json({
+    success: true,
+  });
 });
 
 // admin routes

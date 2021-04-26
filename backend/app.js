@@ -4,10 +4,13 @@ const app = express();
 const errorMiddleware = require("./middlewares/errors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+// to upload image while register
+const fileUpload = require("express-fileupload");
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(fileUpload());
 
 //Import all routes of products
 const products = require("./routes/product");
