@@ -1,14 +1,17 @@
 import React, { Fragment, useState } from "react";
-// import { countries } from "countries-list";
+
+// npm package for the countries
+import { countries } from "countries-list";
 
 import MetaData from "../layout/MetaData";
-// import CheckoutSteps from "./CheckoutSteps";
+import CheckoutSteps from "./CheckoutSteps";
 
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingInfo } from "../../actions/cartActions";
 
 const Shipping = ({ history }) => {
-  //   const countriesList = Object.values(countries);
+  // npm package for all the countries
+  const countriesList = Object.values(countries);
 
   //   shipping info of the user from the redux store
   const { shippingInfo } = useSelector((state) => state.cart);
@@ -25,14 +28,16 @@ const Shipping = ({ history }) => {
     e.preventDefault();
 
     dispatch(saveShippingInfo({ address, city, phoneNo, postalCode, country }));
-    history.push("/confirm");
+
+    // after taking the detials of the shipping routing to the /confirm page
+    history.push("/order/confirm");
   };
 
   return (
     <Fragment>
       <MetaData title={"Shipping Info"} />
 
-      {/* <CheckoutSteps shipping /> */}
+      <CheckoutSteps shipping />
 
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
@@ -88,19 +93,20 @@ const Shipping = ({ history }) => {
 
             <div className="form-group">
               <label htmlFor="country_field">Country</label>
-              {/* <select
+              <select
                 id="country_field"
                 className="form-control"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 required
               >
+                {/* showing list of all the countries */}
                 {countriesList.map((country) => (
                   <option key={country.name} value={country.name}>
                     {country.name}
                   </option>
                 ))}
-              </select> */}
+              </select>
             </div>
 
             <button

@@ -51,7 +51,6 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 // get all order of the user =>api/v1/orders/me
-
 exports.myOrders = catchAsyncErrors(async (req, res, next) => {
   const orders = await Order.find({ user: req.user.id });
   res.staus(200).json({ success: true, order });
@@ -64,7 +63,7 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 
   //   adding total amount of all the orders
   orders.forEach((order) => {
-    otalAmount += order.totalPrice;
+    totalAmount += order.totalPrice;
   });
 
   res.status(200).json({ success: true, totalAmount, orders });

@@ -33,6 +33,7 @@ const Cart = ({ history }) => {
   };
 
   const checkoutHandler = () => {
+    //   when click on the checkout sending it to the login page where using the location either send the home or shipping route
     history.push("/login?redirect=shipping");
   };
 
