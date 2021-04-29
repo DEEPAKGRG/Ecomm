@@ -1,6 +1,6 @@
 const catchAsyncErrors = require("./catchAsyncErrors");
 const jwt = require("jsonwebtoken");
-const ErrorHandler = require("../utils/ErrorHandler");
+const ErrorHandler = require("../utils/errorHandler");
 const User = require("../models/user");
 
 // Creating middleware to check authenticated users
