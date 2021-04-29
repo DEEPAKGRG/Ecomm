@@ -8,9 +8,8 @@
     "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server",
     "seeder": "node backend/utils/seeder.js",
-    "heroku-postbuild" : "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
   },
-
   "author": "Deepak",
   "license": "ISC",
   "dependencies": {
@@ -24,6 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
     "nodemailer": "^6.5.0",
+    "stripe": "^8.145.0",
     "validator": "^13.5.2"
   },
   "devDependencies": {
