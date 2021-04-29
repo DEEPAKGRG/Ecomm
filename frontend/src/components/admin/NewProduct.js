@@ -12,7 +12,7 @@ const NewProduct = ({ history }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Food");
   const [stock, setStock] = useState(0);
   const [seller, setSeller] = useState("");
   const [images, setImages] = useState([]);
@@ -65,7 +65,7 @@ const NewProduct = ({ history }) => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-    console.log(formData);
+    // console.log(formData);
     dispatch(newProduct(formData));
   };
 
@@ -158,7 +158,7 @@ const NewProduct = ({ history }) => {
                 <div className="form-group">
                   <label htmlFor="stock_field">Stock</label>
                   <input
-                    type="number"
+                    type="text"
                     id="stock_field"
                     className="form-control"
                     value={stock}

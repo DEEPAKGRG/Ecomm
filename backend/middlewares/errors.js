@@ -26,11 +26,12 @@ module.exports = (err, req, res, next) => {
       error = new ErrorHandler(message, 400);
     }
 
-    // validation error while adding product handling
+    // Handling Mongoose Validation Error
     if (err.name === "ValidationError") {
-      let message = Object.values(err.errors).map((value) => value.message);
+      const message = Object.values(err.errors).map((value) => value.message);
       error = new ErrorHandler(message, 400);
     }
+
     // Handling Mongoose duplicate key errors
     if (err.code === 11000) {
       const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
