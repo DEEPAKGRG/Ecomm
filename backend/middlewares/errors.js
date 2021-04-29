@@ -1,5 +1,5 @@
 // importing error class
-const ErrorHandler = require("../utils/ErrorHandler");
+const ErrorHandler = require("../utils/errorHandler");
 
 // middleware to handle errors
 module.exports = (err, req, res, next) => {
