@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
-
 import { MDBDataTable } from "mdbreact";
 
 import MetaData from "../layout/MetaData";
@@ -15,8 +13,6 @@ import { myOrders, clearErrors } from "../../actions/orderActions";
 const ListOrders = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
-
-
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
 
@@ -38,7 +34,7 @@ const ListOrders = () => {
           sort: "asc",
         },
         {
-          label: "Num of Items",
+          label: "No of Items",
           field: "numOfItems",
           sort: "asc",
         },

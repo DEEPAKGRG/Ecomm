@@ -84,7 +84,7 @@ const UpdateUser = ({ history, match }) => {
                     className="form-control"
                     name="name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    // onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
@@ -96,7 +96,7 @@ const UpdateUser = ({ history, match }) => {
                     className="form-control"
                     name="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
