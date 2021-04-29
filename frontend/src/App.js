@@ -70,13 +70,10 @@ function App() {
           <Route path="/" component={Home} exact />
           <Route path="/search/:keyword" component={Home} />
           <Route path="/product/:id" component={ProductDetails} exact />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
 
-          <Route exact path="/cart" component={Cart} />
+          <Route path="/cart" component={Cart} exact />
           <ProtectedRoute path="/shipping" component={Shipping} />
-          <ProtectedRoute path="/order/confirm" component={ConfirmOrder} />
-
+          <ProtectedRoute path="/confirm" component={ConfirmOrder} exact />
           <ProtectedRoute path="/success" component={OrderSuccess} />
           {stripeApiKey && (
             <Elements stripe={loadStripe(stripeApiKey)}>
@@ -84,10 +81,11 @@ function App() {
             </Elements>
           )}
 
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/password/forgot" component={ForgotPassword} exact />
           <Route path="/password/reset/:token" component={NewPassword} exact />
           <ProtectedRoute path="/me" component={Profile} exact />
-          <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
           <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
           <ProtectedRoute
             path="/password/update"
@@ -98,6 +96,7 @@ function App() {
           <ProtectedRoute path="/orders/me" component={ListOrders} exact />
           <ProtectedRoute path="/order/:id" component={OrderDetails} exact />
         </div>
+
         <ProtectedRoute
           path="/dashboard"
           isAdmin={true}
@@ -123,16 +122,15 @@ function App() {
           exact
         />
         <ProtectedRoute
-          path="/admin/order/:id"
-          isAdmin={true}
-          component={ProcessOrder}
-          exact
-        />
-
-        <ProtectedRoute
           path="/admin/orders"
           isAdmin={true}
           component={OrdersList}
+          exact
+        />
+        <ProtectedRoute
+          path="/admin/order/:id"
+          isAdmin={true}
+          component={ProcessOrder}
           exact
         />
         <ProtectedRoute

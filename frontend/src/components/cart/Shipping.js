@@ -30,7 +30,7 @@ const Shipping = ({ history }) => {
     dispatch(saveShippingInfo({ address, city, phoneNo, postalCode, country }));
 
     // after taking the detials of the shipping routing to the /confirm page
-    history.push("/order/confirm");
+    history.push("/confirm");
   };
 
   return (
