@@ -11,9 +11,10 @@ const ConfirmOrder = ({ history }) => {
   const { user } = useSelector((state) => state.auth);
 
   // Calculate Order Prices
-  const itemsPrice = cartItems
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
-    .toFixed(2);
+  const itemsPrice = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const shippingPrice = itemsPrice > 200 ? 0 : 25;
   const taxPrice = Number((0.05 * itemsPrice).toFixed(2));

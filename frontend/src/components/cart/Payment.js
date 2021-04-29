@@ -124,10 +124,12 @@ const Payment = ({ history }) => {
             status: result.paymentIntent.status,
           };
 
+         
+          
           //  creating an new order with all the details
           dispatch(createOrder(order));
-
           //   sending user to the success page
+          localStorage.removeItem("cartItems");
           history.push("/success");
         } else {
           alert.error("There is some issue while payment processing");
