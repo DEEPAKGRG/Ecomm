@@ -75,6 +75,7 @@ exports.allOrders = catchAsyncErrors(async (req, res, next) => {
 
 // Update / Process order - ADMIN  =>   /api/v1/admin/order/:id
 // this function basically after an order we are reducing in stock quantity of that product
+// Update / Process order - ADMIN  =>   /api/v1/admin/order/:id
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -97,7 +98,9 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
 
 async function updateStock(id, quantity) {
   const product = await Product.findById(id);
+
   product.stock = product.stock - quantity;
+
   await product.save({ validateBeforeSave: false });
 }
 
