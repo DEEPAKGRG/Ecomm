@@ -74,7 +74,7 @@ const Cart = ({ history }) => {
                       </div>
 
                       <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                        <p id="card_item_price">${item.price}</p>
+                        <p id="card_item_price">₹{item.price}</p>
                       </div>
 
                       <div className="col-4 col-lg-3 mt-4 mt-lg-0">
@@ -142,7 +142,7 @@ const Cart = ({ history }) => {
                 <p>
                   Est. total:{" "}
                   <span className="order-summary-values">
-                    $
+                    ₹
                     {cartItems
                       .reduce(
                         (acc, item) => acc + item.quantity * item.price,
