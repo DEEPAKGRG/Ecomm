@@ -146,12 +146,10 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
 // details of the current logged in user =>api/v1/me
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   const user = await User.findById(req.user.id);
   res.status(200).json({ success: true, user });
 });
-
-
 
 //change the password =>api/v1/password/update
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
@@ -170,9 +168,6 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   await user.save();
   sendToken(user, 200, res);
 });
-
-
-
 
 // Update user profile   =>   /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
@@ -254,8 +249,23 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // delete a user by admin  =>api/v1/admin/user/:id
+// Delete user   =>   /api/v1/admin/user/:id
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not found with id: ${req.params.id}`)
+    );
+  }
+
+  // Remove avatar from cloudinary
+  const image_id = user.avatar.public_id;
+  await cloudinary.uploader.destroy(image_id);
+
   await user.remove();
-  res.status(200).json({ success: true });
+
+  res.status(200).json({
+    success: true,
+  });
 });

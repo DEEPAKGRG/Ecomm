@@ -4,13 +4,22 @@ import { Carousel } from "react-bootstrap";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
 
+import ListReviews from "../review/ListReviews";
+
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails, clearErrors } from "../../actions/productActions";
+import {
+  getProductDetails,
+  newReview,
+  clearErrors,
+} from "../../actions/productActions";
 import { addItemToCart } from "../../actions/cartActions";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 
 const ProductDetails = ({ match }) => {
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -18,7 +27,10 @@ const ProductDetails = ({ match }) => {
   const { loading, error, product } = useSelector(
     (state) => state.productDetails
   );
-  console.log(product);
+  const { user } = useSelector((state) => state.auth);
+  const { error: reviewError, success } = useSelector(
+    (state) => state.newReview
+  );
 
   useEffect(() => {
     dispatch(getProductDetails(match.params.id));
@@ -27,29 +39,90 @@ const ProductDetails = ({ match }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, error, match.params.id]);
 
-  // function to increase the count of product when user click on the + button
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors());
+    }
+
+    if (success) {
+      alert.success("Reivew posted successfully");
+      dispatch({ type: NEW_REVIEW_RESET });
+    }
+  }, [dispatch, alert, error, reviewError, match.params.id, success]);
+
+  const addToCart = () => {
+    dispatch(addItemToCart(match.params.id, quantity));
+    alert.success("Item Added to Cart");
+  };
+
+  // inc. quantity and also adding condition so that it can't be more than the store
   const increaseQty = () => {
     const count = document.querySelector(".count");
-    // if count is equal to product.stock just return
+
     if (count.valueAsNumber >= product.stock) return;
+
     const qty = count.valueAsNumber + 1;
     setQuantity(qty);
   };
 
-  // similar to upper function this is decrease quantity function
   const decreaseQty = () => {
     const count = document.querySelector(".count");
+
     if (count.valueAsNumber <= 1) return;
+
     const qty = count.valueAsNumber - 1;
     setQuantity(qty);
   };
 
-  // add to cart function
-  const addToCart = () => {
-    dispatch(addItemToCart(match.params.id, quantity));
-    alert.success("Item Added to Cart");
+  // hovering effect over the stars
+  function setUserRatings() {
+    const stars = document.querySelectorAll(".star");
+
+    stars.forEach((star, index) => {
+      star.starValue = index + 1;
+
+      ["click", "mouseover", "mouseout"].forEach(function (e) {
+        star.addEventListener(e, showRatings);
+      });
+    });
+
+    function showRatings(e) {
+      stars.forEach((star, index) => {
+        if (e.type === "click") {
+          if (index < this.starValue) {
+            star.classList.add("orange");
+
+            setRating(this.starValue);
+          } else {
+            star.classList.remove("orange");
+          }
+        }
+
+        if (e.type === "mouseover") {
+          if (index < this.starValue) {
+            star.classList.add("yellow");
+          } else {
+            star.classList.remove("yellow");
+          }
+        }
+
+        if (e.type === "mouseout") {
+          star.classList.remove("yellow");
+        }
+      });
+    }
+  }
+
+  // sending a new review if the user has already reviewed than that review will be updated
+  const reviewHandler = () => {
+    const formData = new FormData();
+
+    formData.set("rating", rating);
+    formData.set("comment", comment);
+    formData.set("productId", match.params.id);
+
+    dispatch(newReview(formData));
   };
 
   return (
@@ -139,6 +212,23 @@ const ProductDetails = ({ match }) => {
                 Sold by: <strong>{product.seller}</strong>
               </p>
 
+              {user ? (
+                <button
+                  id="review_btn"
+                  type="button"
+                  className="btn btn-primary mt-4"
+                  data-toggle="modal"
+                  data-target="#ratingModal"
+                  onClick={setUserRatings}
+                >
+                  Submit Your Review
+                </button>
+              ) : (
+                <div className="alert alert-danger mt-5" type="alert">
+                  Login to post your review.
+                </div>
+              )}
+
               <div className="row mt-2 mb-5">
                 <div className="rating w-50">
                   <div
@@ -187,10 +277,13 @@ const ProductDetails = ({ match }) => {
                             name="review"
                             id="review"
                             className="form-control mt-3"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
                           ></textarea>
 
                           <button
                             className="btn my-3 float-right review-btn px-4 text-white"
+                            onClick={reviewHandler}
                             data-dismiss="modal"
                             aria-label="Close"
                           >
@@ -204,6 +297,10 @@ const ProductDetails = ({ match }) => {
               </div>
             </div>
           </div>
+          {/* showing all reviews for a particular product */}
+          {product.reviews && product.reviews.length > 0 && (
+            <ListReviews reviews={product.reviews} />
+          )}
         </Fragment>
       )}
     </Fragment>
