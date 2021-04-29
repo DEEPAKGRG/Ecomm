@@ -27,7 +27,7 @@ const ConfirmOrder = ({ history }) => {
       totalPrice,
     };
 
-    // storing data in the sessionStorage of the browser to get it in the payment options again
+    // saving data in the sessionStorage of the browser to use in the payment againg
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
     history.push("/payment");
   };
