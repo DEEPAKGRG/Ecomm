@@ -51,7 +51,7 @@ export const getProducts = (
     if (category) {
       link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
     }
-
+    console.log(link);
     const { data } = await axios.get(link);
     console.log(data);
     dispatch({

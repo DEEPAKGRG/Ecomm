@@ -23,7 +23,7 @@ const Range = createSliderWithTooltip(Slider.Range);
 const Home = ({ match }) => {
   const [currentPage, setCurrentPage] = useState(1); //current page=1
 
-  const [price, setPrice] = useState([1, 1000]); //a slider with max = 1000 and min = 1
+  const [price, setPrice] = useState([1, 10000000]); //a slider with max = 1000 and min = 1
 
   const [category, setCategory] = useState(""); //to filter according to category
 
@@ -95,13 +95,13 @@ const Home = ({ match }) => {
                     <div className="px-5">
                       <Range
                         marks={{
-                          1: `$1`,
-                          1000: `$1000`,
+                          1: `₹1`,
+                          1000000: `₹1000000`,
                         }}
                         min={1}
-                        max={1000}
-                        defaultValue={[1, 1000]}
-                        tipFormatter={(value) => `$${value}`}
+                        max={1000000}
+                        defaultValue={[1, 1000000]}
+                        tipFormatter={(value) => `₹${value}`}
                         tipProps={{
                           placement: "top",
                           visible: true,

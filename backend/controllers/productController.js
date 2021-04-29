@@ -43,7 +43,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Get all the products=>  api/vi/products
+// Get all products   =>   /api/v1/products?keyword=apple
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
   const resPerPage = 8;
   const productsCount = await Product.countDocuments();

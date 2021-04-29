@@ -7,10 +7,9 @@ class APIFeatures {
   search() {
     const keyword = this.queryStr.keyword
       ? {
+          // regex matching function and i for case insensitive
           name: {
-            // regex matching function
             $regex: this.queryStr.keyword,
-            // making case insentive
             $options: "i",
           },
         }
@@ -29,7 +28,6 @@ class APIFeatures {
 
     // Advance filter for price, ratings etc
     let queryStr = JSON.stringify(queryCopy);
-    // greater than , greater than and equal to and $ to front
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
 
     this.query = this.query.find(JSON.parse(queryStr));
@@ -37,11 +35,9 @@ class APIFeatures {
   }
 
   pagination(resPerPage) {
-    // page number
     const currentPage = Number(this.queryStr.page) || 1;
-    // skiping some items
     const skip = resPerPage * (currentPage - 1);
-    
+
     this.query = this.query.limit(resPerPage).skip(skip);
     return this;
   }
