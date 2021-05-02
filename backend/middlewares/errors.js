@@ -7,14 +7,14 @@ module.exports = (err, req, res, next) => {
   err.message = err.message || "Internal Server Error";
 
   // //  error handling for development mode
-  if (process.env.NODE_ENV === "DEVELOPMENT") {
-    res.status(err.statusCode).json({
-      success: false,
-      error: err,
-      errMessage: err.message,
-      stack: err.stack,
-    });
-  }
+  // if (process.env.NODE_ENV === "DEVELOPMENT") {
+  //   res.status(err.statusCode).json({
+  //     success: false,
+  //     error: err,
+  //     errMessage: err.message,
+  //     stack: err.stack,
+  //   });
+  // }
 
   if (process.env.NODE_ENV === "PRODUCTION") {
     // if (process.env.NODE_ENV === "DEVELOPMENT") {

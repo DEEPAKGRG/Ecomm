@@ -72,6 +72,7 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     .json({ success: true, message: "logout successfully" });
 });
 
+var nodemailer = require("nodemailer");
 // Forget password =>api/v1/password/forgot
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Finding user in database
@@ -90,40 +91,51 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it.`;
 
-  try {
-    await sendEmail({
-      email: user.email,
-      subject: "ShopIT Password Recovery",
-      message,
-    });
-    console.log(user.resetPasswordToken);
-    res.status(200).json({
-      success: true,
-      message: `Email sent to: ${user.email}`,
-    });
-  } catch (error) {
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "deepakgrg30111@gmail.com",
+      pass: process.env.PASSWORD,
+    },
+  });
 
-    await user.save({ validateBeforeSave: false });
+  var mailOptions = {
+    from: "deepakgrg30111@gmail.com",
+    to: req.body.email,
+    subject: "Sending Email using Node.js",
+    text: message,
+  };
 
-    return next(new ErrorHandler(error.message, 500));
-  }
+  transporter.sendMail(mailOptions, async function (error, info) {
+    if (error) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+
+      await user.save({ validateBeforeSave: false });
+
+      return next(new ErrorHandler(error.message, 500));
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Email sent to: ${user.email}`,
+      });
+    }
+  });
 });
 
 // Reset password =>api/v1/password/reset/:token
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   // taking the token from the url
   const resetToken = req.params.token;
-  console.log("dhlew");
-  console.log(resetToken);
+  // console.log("dhlew");
+  // console.log(resetToken);
   //   Encrpting the token
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  console.log(resetPasswordToken);
+  // console.log(resetPasswordToken);
 
   //  find user in the database by hashed token and token expire must be greater than curr. time
   const user = await User.findOne({

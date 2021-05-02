@@ -65,6 +65,9 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 
 // Generate password reset token
 const crypto = require("crypto");
+
+
+
 userSchema.methods.getResetPasswordToken = function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString("hex");

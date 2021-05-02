@@ -36,13 +36,14 @@ const ProductReviews = () => {
       dispatch(clearErrors());
     }
 
-    if (productId !== "") {
-      dispatch(getProductReviews(productId));
-    }
+    // if (productId !== "") {
+    //   dispatch(getProductReviews(productId));
+    // }
 
     if (isDeleted) {
       alert.success("Review deleted successfully");
       dispatch({ type: DELETE_REVIEW_RESET });
+      dispatch(getProductReviews(productId));
     }
   }, [dispatch, alert, error, productId, isDeleted, deleteError]);
 
