@@ -82,7 +82,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
   //  Get reset_password_token
   const resetToken = user.getResetPasswordToken();
-  user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false });
 
   // Create reset password url
   const resetUrl = `${req.protocol}://${req.get(
@@ -139,7 +139,8 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   //  find user in the database by hashed token and token expire must be greater than curr. time
   const user = await User.findOne({
-    resetPasswordToken: resetPasswordToken,
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
   if (!user) {
