@@ -66,18 +66,18 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 // Generate password reset token
 const crypto = require("crypto");
 
-
-
 userSchema.methods.getResetPasswordToken = function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString("hex");
-  //   Encrpting the token before saving it to the database
+
+  // Hash and set to resetPasswordToken
   this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  //setting the expires time of the token send to the email of the user
-  this.resetPasswordExpire = Date.now + 30 * 60 * 1000;
+
+  // Set token expire time
+  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
 
   return resetToken;
 };
