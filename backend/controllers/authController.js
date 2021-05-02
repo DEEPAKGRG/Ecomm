@@ -156,8 +156,10 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
 
   await user.save();
-
-  sendToken(user, 200, res);
+  res.status(200).json({
+    success: true,
+  });
+  // sendToken(user, 200, res);
 });
 
 // details of the current logged in user =>api/v1/me
