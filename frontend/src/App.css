@@ -32,7 +32,8 @@ nav {
 }
 
 #search_btn {
-  background-color: #febd69;
+  /* background-color: #febd69; */
+  background-color: #548CA8;
 }
 
 .input-group {
@@ -47,7 +48,7 @@ nav {
 
 #login_btn,
 #view_btn {
-  background-color: #febd69;
+  background-color: #5089C6;
   padding: 0.4rem 1.8rem;
   font-family: calibri;
 }
@@ -58,7 +59,7 @@ nav {
 }
 
 #cart_count {
-  background-color: #febd69;
+  background-color: #5089C6;
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
   color: black;
@@ -80,7 +81,7 @@ nav {
 }
 
 .card-title a:hover {
-  color: #fa9c23;
+  color: #5089C6;
   text-decoration: none;
 }
 
@@ -93,7 +94,8 @@ nav {
 }
 
 #view_btn {
-  background-color: #fa9c23;
+  /* background-color: #fa9c23; */
+  background-color: #5089C6;
   color: white;
 }
 
@@ -127,7 +129,7 @@ footer {
   display: inline-block;
   position: relative;
   font-family: FontAwesome;
-  color: #fdcc0d;
+  color: #5089C6;
 }
 
 .rating-outer::before {
@@ -145,7 +147,7 @@ footer {
 
 .rating-inner::before {
   content: "\f005 \f005 \f005 \f005 \f005";
-  color: #f8ce0b;
+  color: #035397;
 }
 
 /* Product Details Page */
@@ -162,7 +164,7 @@ footer {
 #cart_btn,
 #review_btn {
   border-radius: 2rem;
-  background-color: #fa9c23;
+  background-color: #5089C6;
   border: none;
   padding: 0.5rem 2rem;
 }
@@ -240,22 +242,22 @@ footer {
 }
 
 #card_item_price {
-  color: #febd69;
+  color: #5089C6;
   font-weight: bold;
   font-size: 1.4rem;
 }
 
 #checkout_btn,
 .review-btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
   margin-top: 2rem;
   border-radius: 5rem;
 }
 
 #view_order_details {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
 }
 
 #order_summary {
@@ -307,8 +309,8 @@ footer {
 }
 
 .wrapper form .btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
   color: white;
   margin-top: 2.5rem;
 }
@@ -445,8 +447,8 @@ footer {
 }
 
 #edit_profile {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
 }
 
 /* Confirm Order */
@@ -457,8 +459,8 @@ footer {
 }
 
 .update-btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
   color: white;
 }
 
@@ -468,16 +470,16 @@ footer {
 
 /* Pagination */
 .page-item.active .page-link {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #5089C6;
+  border-color: #5089C6;
 }
 
 .page-link {
-  color: #fa9c23;
+  color: #5089C6;
 }
 
 .page-link:hover {
-  color: #fa9c23;
+  color: #5089C6;
 }
 
 /* Admin Sidebar */
